@@ -8,7 +8,9 @@ import re
 import requests
 
 def find_disk_info(part):
-    part = part.replace('PWR', '')
+    for r in (('PWR', ''), ('EFD', '')):
+        part = part.replace(*r)
+
     r = requests.get('http://www.harddrivesdirect.com/advanced_search_result_exact.php?keywords=' + part)
     text = r.text
     disk = re.search(r'<span class=roboto_blue12>(.*)<\/span>&nbsp;<span class=roboto_light_blue12>&nbsp;</span>', text)
@@ -16,7 +18,7 @@ def find_disk_info(part):
         disk = disk.group(1).replace(part + ' ', '')
         return disk
 
-filepath = 'SPA_cfg_info.txt'
+filepath = '/Users/korp/Downloads/VNX5400.zip Folder/CKM00151600783_SPA_2018-06-05_13-53-31_3c9016_data.zip Folder/CKM00151600783_SPA_2018-06-05_13-53-31_3c9016_sus.zip Folder/SPA_cfg_info.txt'
 
 parse = False
 total = 0
